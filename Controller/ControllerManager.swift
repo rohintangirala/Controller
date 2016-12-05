@@ -14,14 +14,14 @@ class ControllerManager {
     let redisServer = Redis()
     let ip = "10.152.2.12"
     let port = 6379
-    var currX = 0
-    var currY = 0
     var playerID: Int!
+    
     
     init() {
         connect()
         redisServer.Command(Command: "LPUSH list 0")
         redisServer.Command(Command: "LPUSH list 0")
+        
     }
     
     private func connect() {
@@ -37,6 +37,15 @@ class ControllerManager {
             static let instance = ControllerManager()
         }
         return Static.instance
+    }
+    
+    func sendData(x: Double){
+        if(playerID==1){
+            redisServer.Command(Command: "LSET list 0 \(x)")
+        }
+        else if(playerID==2){
+            redisServer.Command(Command: "LSET list 1 \(x)")
+        }
     }
     
     func moveUp() {
